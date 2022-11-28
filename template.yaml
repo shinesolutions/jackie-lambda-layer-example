@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  pEnvironment:
+    Type: String
+    Default: sample-env-param
+
+Resources:
+
+  rLxmlLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: lxml
+      ContentUri: ./layers/lxml
+      CompatibleArchitectures:
+        - x86_64
+      CompatibleRuntimes:
+        - python3.9
+    Metadata:
+      BuildMethod: makefile
+      BuildArchitecture: x86_64
+
+  rTagPoliciesReportLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      # Role: !GetAtt rQueryFunctionRole.Arn
+      FunctionName: !Sub "${AWS::StackName}-JackieSample"
+      CodeUri: functions/lxml-test
+      Handler: app2.lambda_handler
+      Timeout: 600
+      Runtime: python3.9
+      Layers:
+        - !Ref rLxmlLayer
+      # Events:
+      #   WeeklyReport:
+      #     Type: Schedule
+      #     Properties:
+      #       Enabled: true
+      #       Schedule: 'cron(0 6 ? * MON *)'
+      #       Description: Run TagPoliciesReportLambda 6 hours after TagPoliciesReportGlueCrawler
+      # Environment:
+      #   Variables:
+      #     Environment: !Ref pEnvironment

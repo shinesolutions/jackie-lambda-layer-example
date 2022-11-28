@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sam-lxml-test"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1ryvkvfrtahdh"
+s3_prefix = "sam-lxml-test"
+region = "ap-southeast-2"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "pEnvironment=\"sample-env-param\""
+image_repositories = []
